@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧮 سوروبان - الحساب الذهني</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #FFF7D6, #DFF9FF);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 30px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      max-width: 700px;
+      width: 100%;
+      padding: 40px;
+      animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .title {
+      font-size: 2.5rem;
+      color: #7C6AE6;
+      margin-bottom: 10px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #666;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+      background: #F9FBFF;
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #7C6AE6;
+    }
+
+    .level-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #EEF7FF, #E6F3FF);
+      color: #2C6FCF;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+
+    .question-box {
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .question {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #1F2A44;
+      margin: 20px 0;
+      letter-spacing: 2px;
+    }
+
+    .question em {
+      color: #FF8A65;
+    }
+
+    .emoji {
+      font-size: 4rem;
+      margin: 20px 0;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .option-btn {
+      padding: 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      background: linear-gradient(135deg, #DFE9FF, #EAFDF7);
+      color: #1F2A44;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(124,106,230,0.2);
+      background: linear-gradient(135deg, #C8E0FF, #D0F5EE);
+    }
+
+    .option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .option-btn.correct {
+      background: linear-gradient(135deg, #A8F7D4, #5DDD9D);
+      color: #0A5A3B;
+      animation: correct 0.6s ease;
+    }
+
+    .option-btn.wrong {
+      background: linear-gradient(135deg, #FFC9D5, #FF8FA3);
+      color: #8B1E2D;
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes correct {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 15px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: white;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #7C6AE6, #5EC7C1);
+      box-shadow: 0 5px 15px rgba(124,106,230,0.2);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(124,106,230,0.3);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #FFB703, #FF8A65);
+      box-shadow: 0 5px 15px rgba(255,171,3,0.2);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255,171,3,0.3);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #E9EEF8;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4ECB71, #6ED3FF, #7C6AE6);
+      width: 0%;
+      transition: width 0.5s ease;
+      border-radius: 10px;
+    }
+
+    .progress-text {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .start-screen {
+      text-align: center;
+    }
+
+    .start-screen h2 {
+      font-size: 1.8rem;
+      color: #1F2A44;
+      margin-bottom: 20px;
+    }
+
+    .levels-info {
+      text-align: left;
+      background: #F0F5FF;
+      padding: 20px;
+      border-radius: 15px;
+      margin: 20px 0;
+    }
+
+    .levels-info h3 {
+      color: #2C6FCF;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .level-item {
+      background: white;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border-left: 4px solid #7C6AE6;
+      font-weight: 500;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 25px;
+      }
+
+      .title {
+        font-size: 1.8rem;
+      }
+
+      .question {
+        font-size: 2.5rem;
+      }
+
+      .options {
+        grid-template-columns: 1fr;
+      }
+
+      .buttons {
+        flex-direction: column;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- الشاشة الأولى -->
+    <div id="startScreen" class="start-screen">
+      <div class="header">
+        <div class="title">🧮 سوروبان</div>
+        <div class="subtitle">الحساب الذهني للأطفال</div>
+      </div>
+
+      <div class="levels-info">
+        <h3>المستويات الأربعة</h3>
+        <div class="level-item">🎯 المستوى 1: بدون قواعد (جمع وطرح 1-9)</div>
+        <div class="level-item">⭐ المستوى 2: قواعد 5 (مع استخدام الرقم 5)</div>
+        <div class="level-item">🔥 المستوى 3: قواعد 10 (مع استخدام الرقم 10)</div>
+        <div class="level-item">💎 المستوى 4: العمليات الأربع (جمع، طرح، ضرب، قسمة)</div>
+      </div>
+
+      <p style="color: #666; margin: 20px 0; line-height: 1.6;">
+        🎮 اجب على 3 أسئلة صحيحة متتالية للانتقال للمستوى التالي<br>
+        ⭐ اجمع النقاط وحقق أفضل نتيجة<br>
+        🏆 أكمل جميع المستويات لتصبح بطل السوروبان
+      </p>
+
+      <button class="btn btn-primary" onclick="startGame()" style="width: 100%; padding: 15px;">
+        ابدأ اللعبة الآن 🎮
+      </button>
+    </div>
+
+    <!-- شاشة اللعبة -->
+    <div id="gameScreen" class="hidden">
+      <div class="header">
+        <div class="title">🧮 سوروبان</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-label">المستوى</div>
+          <div class="stat-value" id="levelDisplay">1</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">النقاط</div>
+          <div class="stat-value" id="scoreDisplay">0</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">التتابع</div>
+          <div class="stat-value" id="streakDisplay">0</div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin: 15px 0;">
+        <div class="level-badge" id="levelBadge">بدون قواعد</div>
+      </div>
+
+      <div class="progress-text" id="progressText">التقدم: 0%</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div class="question-box">
+        <div class="emoji" id="emoji">😊</div>
+        <div class="question" id="question">7 + 3 = <em>؟</em></div>
+      </div>
+
+      <div class="options" id="options"></div>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="resetGame()">إعادة تعيين 🔄</button>
+      </div>
+    </div>
+
+    <!-- شاشة النهاية -->
+    <div id="endScreen" class="hidden">
+      <div class="header">
+        <div class="emoji">🏆</div>
+        <div class="title">مبروك!</div>
+      </div>
+
+      <div style="text-align: center; color: #1F2A44; font-size: 1.2rem; margin: 30px 0;">
+        <p style="margin: 15px 0; font-size: 1.1rem;">
+          لقد أكملت جميع المستويات! 🎉
+        </p>
+        <div style="background: #F0F5FF; padding: 20px; border-radius: 15px; margin: 20px 0;">
+          <p style="color: #666; font-size: 0.9rem; margin-bottom: 10px;">النقاط النهائية</p>
+          <p id="finalScore" style="font-size: 2.5rem; font-weight: bold; color: #7C6AE6;">0</p>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="resetGame()" style="width: 100%; padding: 15px;">
+        العب مرة أخرى 🎮
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const levels = [
+      { name: 'بدون قواعد', key: 'easy', emoji: '😊' },
+      { name: 'قواعد 5', key: 'rule5', emoji: '🤩' },
+      { name: 'قواعد 10', key: 'rule10', emoji: '🚀' },
+      { name: 'العمليات الأربع', key: 'ops', emoji: '🏆' }
+    ];
+
+    let currentLevel = 0;
+    let score = 0;
+    let streak = 0;
+    let correctAnswers = 0;
+    let totalAnswers = 0;
+    let currentQuestion = null;
+    let gameActive = false;
+
+    function startGame() {
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
+      document.getElementById('endScreen').classList.add('hidden');
+      currentLevel = 0;
+      score = 0;
+      streak = 0;
+      correctAnswers = 0;
+      totalAnswers = 0;
+      gameActive = true;
+      generateQuestion();
+    }
+
+    function resetGame() {
+      document.getElementById('startScreen').classList.remove('hidden');
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('endScreen').classList.add('hidden');
+      gameActive = false;
+    }
+
+    function generateQuestion() {
+      const level = levels[currentLevel];
+      let expression = '';
+      let answer = 0;
+
+      if (level.key === 'easy') {
+        const a = Math.floor(Math.random() * 9) + 1;
+        const b = Math.floor(Math.random() * 9) + 1;
+        const op = Math.random() > 0.5 ? '+' : '-';
+        if (op === '+') {
+          answer = a + b;
+          expression = `${a} + ${b}`;
+        } else {
+          const x = Math.max(a, b);
+          const y = Math.min(a, b);
+          answer = x - y;
+          expression = `${x} - ${y}`;
+        }
+      }
+
+      if (level.key === 'rule5') {
+        const a = Math.floor(Math.random() * 8) + 1;
+        const b = Math.floor(Math.random() * 4) + 1;
+        const op = Math.random() > 0.5 ? '+' : '-';
+        if (op === '+') {
+          answer = a + b + 5;
+          expression = `${a} + ${b} + 5`;
+        } else {
+          answer = a + 5 - b;
+          expression = `${a} + 5 - ${b}`;
+        }
+      }
+
+      if (level.key === 'rule10') {
+        const a = Math.floor(Math.random() * 9) + 1;
+        const b = Math.floor(Math.random() * 7) + 2;
+        const op = Math.random() > 0.5 ? '+' : '-';
+        if (op === '+') {
+          answer = a + b + 10;
+          expression = `${a} + ${b} + 10`;
+        } else {
+          answer = 10 + a - b;
+          expression = `10 + ${a} - ${b}`;
+        }
+      }
+
+      if (level.key === 'ops') {
+        const ops = ['+', '-', '×', '÷'];
+        const op = ops[Math.floor(Math.random() * ops.length)];
+
+        if (op === '+') {
+          const a = Math.floor(Math.random() * 11) + 5;
+          const b = Math.floor(Math.random() * 10) + 3;
+          answer = a + b;
+          expression = `${a} + ${b}`;
+        } else if (op === '-') {
+          const a = Math.floor(Math.random() * 13) + 6;
+          const b = Math.floor(Math.random() * (a - 1)) + 1;
+          answer = a - b;
+          expression = `${a} - ${b}`;
+        } else if (op === '×') {
+          const a = Math.floor(Math.random() * 8) + 2;
+          const b = Math.floor(Math.random() * 8) + 2;
+          answer = a * b;
+          expression = `${a} × ${b}`;
+        } else {
+          const b = Math.floor(Math.random() * 8) + 2;
+          const result = Math.floor(Math.random() * 8) + 2;
+          const a = b * result;
+          answer = result;
+          expression = `${a} ÷ ${b}`;
+        }
+      }
+
+      currentQuestion = { expression, answer };
+      displayQuestion();
+    }
+
+    function displayQuestion() {
+      document.getElementById('question').innerHTML = `${currentQuestion.expression} = <em>؟</em>`;
+      document.getElementById('levelDisplay').textContent = currentLevel + 1;
+      document.getElementById('scoreDisplay').textContent = score;
+      document.getElementById('streakDisplay').textContent = streak;
+      document.getElementById('levelBadge').textContent = levels[currentLevel].name;
+      document.getElementById('emoji').textContent = levels[currentLevel].emoji;
+      
+      const progress = ((currentLevel + 1) / levels.length) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+      document.getElementById('progressText').textContent = `التقدم: ${Math.round(progress)}%`;
+
+      showOptions();
+    }
+
+    function showOptions() {
+      const options = [currentQuestion.answer];
+      while (options.length < 4) {
+        const wrong = currentQuestion.answer + Math.floor(Math.random() * 21) - 10;
+        if (wrong >= 0 && !options.includes(wrong)) options.push(wrong);
+      }
+      options.sort(() => Math.random() - 0.5);
+
+      const container = document.getElementById('options');
+      container.innerHTML = '';
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(btn, opt);
+        container.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(btn, chosen) {
+      if (!gameActive) return;
+      gameActive = false;
+
+      totalAnswers++;
+      const isCorrect = chosen === currentQuestion.answer;
+
+      document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+        score += 10;
+        streak++;
+        correctAnswers++;
+        document.getElementById('emoji').textContent = '😄';
+      } else {
+        btn.classList.add('wrong');
+        streak = 0;
+        document.getElementById('emoji').textContent = '😵';
+        document.querySelectorAll('.option-btn').forEach(b => {
+          if (parseInt(b.textContent) === currentQuestion.answer) {
+            b.classList.add('correct');
+          }
+        });
+      }
+
+      document.getElementById('scoreDisplay').textContent = score;
+      document.getElementById('streakDisplay').textContent = streak;
+
+      setTimeout(() => {
+        if (streak >= 3 && currentLevel < levels.length - 1) {
+          currentLevel++;
+          streak = 0;
+          gameActive = true;
+          generateQuestion();
+        } else if (streak >= 3 && currentLevel === levels.length - 1) {
+          document.getElementById('gameScreen').classList.add('hidden');
+          document.getElementById('endScreen').classList.remove('hidden');
+          document.getElementById('finalScore').textContent = score;
+        } else {
+          gameActive = true;
+          generateQuestion();
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
